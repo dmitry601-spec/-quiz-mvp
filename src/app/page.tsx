@@ -43,7 +43,7 @@ export default function LandingPage() {
         <div className={s.navR}>
           <a href="#how" className={s.navA}>Как работает</a>
           <a href="#pricing" className={s.navA}>Цена</a>
-          <Link href="/start" className={`${s.btn} ${s.btnDark}`}>Начать бесплатно</Link>
+          <Link href="/start" className={`${s.btn} ${s.btnBlue}`}>Начать бесплатно</Link>
         </div>
       </nav>
 
@@ -62,10 +62,10 @@ export default function LandingPage() {
               Опишите тему — AI сгенерирует квиз или игру. Ученик откроет по ссылке, без регистрации, за 60 секунд.
             </p>
             <div className={`${s.heroBtns} ${s.ha} ${s.ha4}`}>
-              <Link href="/start" className={`${s.btn} ${s.btnAmber} ${s.btnLg}`}>
+              <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
                 Создать первую игру →
               </Link>
-              <a href="#aha" className={`${s.btn} ${s.btnOutline} ${s.btnLg}`}>
+              <a href="#aha" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`} style={{ color: "#010B13" }}>
                 Посмотреть пример
               </a>
             </div>
@@ -245,9 +245,9 @@ export default function LandingPage() {
           <h2 data-r>Занятия, которые ученики ждут</h2>
           <div className={`${s.outGrid}`}>
             {[
-              { ic: "🔥", t: "Ученики просят ещё",     p: "Занятия стали живыми — ученик сам спрашивает «будет ли сегодня игра?»", cls: s.ocDark },
-              { ic: "🕐", t: "Вечера — ваши",          p: "Вы перестали тратить часы на подготовку интерактивных заданий.",        cls: s.ocStone },
-              { ic: "💪", t: "Уверенность в себе",     p: "Вы один из самых современных репетиторов в нише — и это видно.",        cls: s.ocStone },
+              { ic: "🔥", t: "Ученики просят ещё",     p: "Занятия стали живыми — ученик сам спрашивает «будет ли сегодня игра?»", cls: s.ocDark  },
+              { ic: "🕐", t: "Вечера — ваши",          p: "Вы перестали тратить часы на подготовку интерактивных заданий.",        cls: s.ocBlue  },
+              { ic: "💪", t: "Уверенность в себе",     p: "Вы один из самых современных репетиторов в нише — и это видно.",        cls: s.ocWhite },
             ].map(({ ic, t, p, cls }, i) => (
               <div key={t} className={`${s.ocard} ${cls}`} data-r style={{ transitionDelay: `${i * 0.1}s` }}>
                 <div className={s.ocardIc}>{ic}</div>
@@ -258,9 +258,9 @@ export default function LandingPage() {
           </div>
           <div className={`${s.outGrid} ${s.outGridSecond}`}>
             {[
-              { ic: "📈", t: "Очередь из учеников",   p: "Вы выстроили поток и можете выбирать, с кем работать.",                                cls: s.ocWhite },
-              { ic: "💰", t: "Цена выше рынка",        p: "Берёте дороже конкурентов — и ученики остаются, потому что ценят качество.",          cls: s.ocWhite },
-              { ic: "🤝", t: "Рекомендации без просьб", p: "Родители сами рассказывают о вас, потому что дети приходят с интересом.",             cls: s.ocDark },
+              { ic: "📈", t: "Очередь из учеников",    p: "Вы выстроили поток и можете выбирать, с кем работать.",                                cls: s.ocWhite },
+              { ic: "💰", t: "Цена выше рынка",         p: "Берёте дороже конкурентов — и ученики остаются, потому что ценят качество.",          cls: s.ocBlue  },
+              { ic: "🤝", t: "Рекомендации без просьб", p: "Родители сами рассказывают о вас, потому что дети приходят с интересом.",             cls: s.ocDark  },
             ].map(({ ic, t, p, cls }, i) => (
               <div key={t} className={`${s.ocard} ${cls}`} data-r style={{ transitionDelay: `${i * 0.1}s` }}>
                 <div className={s.ocardIc}>{ic}</div>
@@ -347,7 +347,7 @@ export default function LandingPage() {
               <li>Ссылка для ученика без регистрации</li>
               <li>Статистика прохождения</li>
             </ul>
-            <Link href="/start" className={`${s.btn} ${s.btnAmber} ${s.btnLg}`} style={{ width: "100%", justifyContent: "center" }}>
+            <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`} style={{ width: "100%", justifyContent: "center" }}>
               Начать бесплатно →
             </Link>
             <div className={s.priceNote}>Один удержанный ученик = 1 000–3 000 ₽ в месяц. Инструмент окупается с первого занятия.</div>

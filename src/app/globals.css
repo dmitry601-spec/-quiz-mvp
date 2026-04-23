@@ -2,37 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;900&display=swap');
 
 :root {
-  --bg:           #111111;
-  --surface:      #1A1A1A;
-  --white:        #FFFFFF;
-  --muted:        rgba(255,255,255,0.38);
-  --border:       rgba(255,255,255,0.08);
-  --amber:        #C47B2A;
-  --amber-dim:    #B36E22;
-  --amber-glow:   rgba(196,123,42,0.12);
-  --amber-border: rgba(196,123,42,0.22);
-  --red:          #E05252;
-  --red-glow:     rgba(224,82,82,0.12);
-  --text:         #FFFFFF;
+  --bg:           #FFFFFF;
+  --surface:      #F5F5F7;
+  --text:         #010B13;
+  --muted:        #666666;
+  --border:       #E1E1E1;
+  --blue:         #6C8CFC;
+  --blue-dark:    #2B7FFF;
+  --blue-soft:    #F2F5FF;
+  --success:      #19AA0F;
+  --success-soft: #F0FDF4;
+  --error:        #FB2C36;
+  --error-soft:   #FFF0F0;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Golos Text', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: none; }
 }
 
@@ -41,18 +41,12 @@ body {
   50%       { opacity: 0; }
 }
 
-@keyframes spin {
+@keyframes spin-anim {
   to { transform: rotate(360deg); }
 }
 
 @layer utilities {
-  .font-display {
-    font-family: 'Playfair Display', serif;
-  }
-  .font-body {
-    font-family: 'DM Sans', sans-serif;
-  }
-  .animate-fade-up {
-    animation: fade-up 0.55s ease both;
-  }
+  .font-display { font-family: 'Golos Text', system-ui, sans-serif; }
+  .font-body    { font-family: 'Golos Text', system-ui, sans-serif; }
+  .animate-fade-up { animation: fade-up 0.5s ease both; }
 }
