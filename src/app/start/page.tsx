@@ -4,11 +4,23 @@ import Link from "next/link";
 import { GameFormat, FORMAT_LABELS, FORMAT_DESCRIPTIONS } from "@/lib/questions";
 
 const formats: GameFormat[] = ["quiz", "truefalse", "flashcard"];
-const FORMAT_NUMS = ["01", "02", "03"];
+
 const FORMAT_ICONS: Record<GameFormat, string> = {
   quiz: "🧠",
   truefalse: "⚡",
   flashcard: "📖",
+};
+
+const FORMAT_TIME: Record<GameFormat, string> = {
+  quiz: "~2 мин",
+  truefalse: "~1 мин",
+  flashcard: "~3 мин",
+};
+
+const FORMAT_BADGE: Record<GameFormat, string | null> = {
+  quiz: "Популярное",
+  truefalse: null,
+  flashcard: null,
 };
 
 export default function StartPage() {
@@ -58,7 +70,14 @@ export default function StartPage() {
             Выберите формат игры
           </div>
           {formats.map((format, i) => (
-            <FormatCard key={format} format={format} icon={FORMAT_ICONS[format]} delay={i * 90 + 150} />
+            <FormatCard
+              key={format}
+              format={format}
+              icon={FORMAT_ICONS[format]}
+              time={FORMAT_TIME[format]}
+              badge={FORMAT_BADGE[format]}
+              delay={i * 90 + 150}
+            />
           ))}
         </div>
 
@@ -89,8 +108,8 @@ export default function StartPage() {
   );
 }
 
-function FormatCard({ format, icon, delay }: {
-  format: GameFormat; icon: string; delay: number;
+function FormatCard({ format, icon, time, badge, delay }: {
+  format: GameFormat; icon: string; time: string; badge: string | null; delay: number;
 }) {
   return (
     <Link
@@ -128,14 +147,32 @@ function FormatCard({ format, icon, delay }: {
       }}>
         {icon}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "3px", flex: 1 }}>
-        <span style={{ fontSize: "16px", fontWeight: 700, color: "#010B13" }}>
-          {FORMAT_LABELS[format]}
-        </span>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "3px", flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "16px", fontWeight: 700, color: "#010B13" }}>
+            {FORMAT_LABELS[format]}
+          </span>
+          {badge && (
+            <span style={{
+              fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px",
+              background: "#EFF6FF", color: "#6C8CFC",
+              border: "1px solid #D3DDFE",
+              borderRadius: "100px", padding: "2px 8px",
+              textTransform: "uppercase" as const, flexShrink: 0,
+            }}>
+              {badge}
+            </span>
+          )}
+        </div>
         <span style={{ fontSize: "13px", color: "#666666", lineHeight: 1.5 }}>
           {FORMAT_DESCRIPTIONS[format]}
         </span>
+        <span style={{ fontSize: "12px", color: "#ACACAD", fontWeight: 500, marginTop: "2px" }}>
+          {time} · 5 вопросов
+        </span>
       </div>
+
       <span className="arr" style={{ color: "#6C8CFC", fontSize: "18px", fontWeight: 700, transition: "transform .18s", flexShrink: 0 }}>
         →
       </span>
