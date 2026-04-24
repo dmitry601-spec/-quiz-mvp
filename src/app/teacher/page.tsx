@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { IconQuiz, IconTrueFalse, IconFlashcard, IconFillBlank, IconMatching } from "@/app/icons";
+import { IconQuiz, IconTrueFalse, IconFlashcard, IconFillBlank, IconMatching, IconUser, IconLink, IconBarChart, IconClipboard } from "@/app/icons";
 
 const COUNTS = [5, 10, 15] as const;
 const DIFFICULTIES = [
@@ -59,7 +59,7 @@ export default function TeacherPage() {
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ACACAD"}
           >← На главную</a>
           <div style={{ marginTop: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
-            <div style={{ width: "44px", height: "44px", background: "#EFF6FF", border: "1px solid #D3DDFE", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>👩‍🏫</div>
+            <div style={{ width: "44px", height: "44px", background: "#EFF6FF", border: "1px solid #D3DDFE", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", color: "#6C8CFC" }}><IconUser size={22} /></div>
             <div>
               <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#010B13", letterSpacing: "-0.5px", lineHeight: 1 }}>Кабинет учителя</h1>
               <p style={{ fontSize: "14px", color: "#666666", marginTop: "4px" }}>Создайте игру — получите ссылку для учеников</p>
@@ -164,14 +164,14 @@ export default function TeacherPage() {
 
         {/* Info strip */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", background: "#FFFFFF", border: "1px solid #E1E1E1", borderRadius: "16px", overflow: "hidden", animation: "fade-up 0.4s ease 260ms both" }}>
-          {[
-            { icon: "🔗", text: "Ссылка для учеников" },
-            { icon: "📊", text: "Live-результаты" },
-            { icon: "📝", text: "Разбор ошибок" },
-          ].map(({ icon, text }, i) => (
+          {([
+            { Icon: IconLink,      text: "Ссылка для учеников" },
+            { Icon: IconBarChart,  text: "Live-результаты" },
+            { Icon: IconClipboard, text: "Разбор ошибок" },
+          ] as const).map(({ Icon, text }, i) => (
             <div key={text} style={{ padding: "14px 10px", textAlign: "center", borderRight: i < 2 ? "1px solid #E1E1E1" : "none" }}>
-              <div style={{ fontSize: "20px" }}>{icon}</div>
-              <div style={{ fontSize: "11px", color: "#888899", marginTop: "4px", fontWeight: 600, lineHeight: 1.3 }}>{text}</div>
+              <div style={{ display: "flex", justifyContent: "center", color: "#6C8CFC", marginBottom: "4px" }}><Icon size={18} /></div>
+              <div style={{ fontSize: "11px", color: "#888899", fontWeight: 600, lineHeight: 1.3 }}>{text}</div>
             </div>
           ))}
         </div>

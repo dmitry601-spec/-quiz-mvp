@@ -206,6 +206,44 @@ export function IconSearch(p: P) {
   );
 }
 
+export function IconUser(p: P) {
+  return (
+    <Svg {...p}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </Svg>
+  );
+}
+
+export function IconCheckCircle(p: P) {
+  return (
+    <Svg {...p}>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </Svg>
+  );
+}
+
+export function IconInfo(p: P) {
+  return (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <circle cx="12" cy="16" r="0.5" fill="currentColor" strokeWidth="0" />
+    </Svg>
+  );
+}
+
+export function IconClipboard(p: P) {
+  return (
+    <Svg {...p}>
+      <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+      <rect x="9" y="3" width="6" height="4" rx="1" />
+      <path d="M9 12h6M9 16h4" />
+    </Svg>
+  );
+}
+
 export function IconHourglass(p: P) {
   return (
     <Svg {...p}>

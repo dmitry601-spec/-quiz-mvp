@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import type { Session } from "@/lib/store";
-import { IconSearch } from "@/app/icons";
+import { IconSearch, IconCheckCircle, IconInfo } from "@/app/icons";
 import type {
   Question, QuizQuestion, TrueFalseQuestion, FlashcardQuestion,
   FillBlankQuestion, MatchingQuestion,
@@ -328,7 +328,7 @@ export default function GamePage() {
   /* ══════════════════════ DONE ══════════════════════ */
   if (phase === "submitting" || phase === "done") {
     const pct      = total > 0 ? Math.round((score / total) * 100) : 0;
-    const grade    = pct === 100 ? "Идеально! 🎉" : pct >= 80 ? "Отлично! 👏" : pct >= 50 ? "Неплохо 👍" : "Попробуй ещё раз";
+    const grade    = pct === 100 ? "Идеально!" : pct >= 80 ? "Отлично!" : pct >= 50 ? "Неплохо" : "Попробуй ещё раз";
     const ringColor = pct >= 80 ? BLUE : pct >= 50 ? AMBER : "#FB2C36";
 
     return (
@@ -356,7 +356,7 @@ export default function GamePage() {
               {phase === "submitting" ? (
                 <><Spinner /><span style={{ fontSize: "14px", color: MID }}>Отправляем результат…</span></>
               ) : (
-                <><span style={{ fontSize: "16px" }}>✅</span><span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>Результат отправлен {session.teacherName}!</span></>
+                <><IconCheckCircle size={16} style={{ color: OK_TEXT, flexShrink: 0 }} /><span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>Результат отправлен {session.teacherName}!</span></>
               )}
             </div>
           </div>
@@ -395,7 +395,7 @@ export default function GamePage() {
                               ✗ Вы: {qq.options[ua as number]}
                             </div>
                           )}
-                          {ua === -1 && <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: "#FFF7ED", border: "1px solid #FCD34D", color: "#92400E", fontWeight: 600 }}>⏰ Время вышло</div>}
+                          {ua === -1 && <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: "#FFF7ED", border: "1px solid #FCD34D", color: "#92400E", fontWeight: 600 }}>Время вышло</div>}
                           <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 600 }}>
                             ✓ {qq.options[qq.correct]}
                           </div>
@@ -426,8 +426,8 @@ export default function GamePage() {
                     )}
 
                     {(q as QuizQuestion).explanation && (
-                      <div style={{ paddingLeft: "32px", fontSize: "13px", color: "#3B5FC0", lineHeight: 1.6, background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "8px", padding: "9px 12px" }}>
-                        💡 {(q as QuizQuestion).explanation}
+                      <div style={{ paddingLeft: "32px", fontSize: "13px", color: "#3B5FC0", lineHeight: 1.6, background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "8px", padding: "9px 12px", display: "flex", alignItems: "flex-start", gap: "7px" }}>
+                        <IconInfo size={13} style={{ flexShrink: 0, marginTop: "1px" }} /> {(q as QuizQuestion).explanation}
                       </div>
                     )}
                   </div>
@@ -588,7 +588,7 @@ export default function GamePage() {
         <div key={animKey} style={{ background: WHITE, border: `1px solid ${BORDER}`, borderRadius: "24px", padding: "26px", boxShadow: "0 4px 20px rgba(0,0,0,.05)", display: "flex", flexDirection: "column", gap: "20px", animation: "fade-up 0.3s ease both", minHeight: "200px" }}>
           {timedOut && (
             <div style={{ background: "#FFF7ED", border: "1px solid #FCD34D", borderRadius: "10px", padding: "10px 14px", fontSize: "13px", fontWeight: 700, color: "#92400E", textAlign: "center" }}>
-              ⏰ Время вышло!
+              Время вышло!
             </div>
           )}
 
@@ -754,8 +754,8 @@ function FillBlankCard({ question, input, submitted, onChange, onSubmit, onNext 
 
       {/* Hint */}
       {!submitted && question.hint && (
-        <div style={{ fontSize: "13px", color: MID, background: SURFACE, borderRadius: "8px", padding: "8px 12px" }}>
-          💡 Подсказка: {question.hint}
+        <div style={{ fontSize: "13px", color: MID, background: SURFACE, borderRadius: "8px", padding: "8px 12px", display: "flex", alignItems: "flex-start", gap: "7px" }}>
+          <IconInfo size={13} style={{ flexShrink: 0, marginTop: "2px" }} /> Подсказка: {question.hint}
         </div>
       )}
 
@@ -771,8 +771,8 @@ function FillBlankCard({ question, input, submitted, onChange, onSubmit, onNext 
         </div>
       )}
       {submitted && question.explanation && (
-        <div style={{ fontSize: "13px", color: "#3B5FC0", lineHeight: 1.6, background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "8px", padding: "10px 12px" }}>
-          💡 {question.explanation}
+        <div style={{ fontSize: "13px", color: "#3B5FC0", lineHeight: 1.6, background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "8px", padding: "10px 12px", display: "flex", alignItems: "flex-start", gap: "7px" }}>
+          <IconInfo size={13} style={{ flexShrink: 0, marginTop: "2px" }} /> {question.explanation}
         </div>
       )}
 
