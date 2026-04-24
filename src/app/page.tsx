@@ -69,6 +69,7 @@ export default function LandingPage() {
         <div className={s.navR}>
           <a href="#how" className={s.navA}>Как работает</a>
           <a href="#pricing" className={s.navA}>Цена</a>
+          <Link href="/teacher" className={s.navA}>Учителям</Link>
           <Link href="/start" className={`${s.btn} ${s.btnBlue}`}>Начать бесплатно</Link>
         </div>
       </nav>
@@ -94,12 +95,12 @@ export default function LandingPage() {
 
             {/* §15 Hick's Law: один Primary CTA + один Ghost — не больше двух */}
             <div className={`${s.heroBtns} ${s.ha} ${s.ha4}`}>
-              <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
-                Создать первую игру →
+              <Link href="/teacher" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
+                Создать урок для класса →
               </Link>
-              <a href="#recognize" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`}>
-                Узнать больше
-              </a>
+              <Link href="/start" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`}>
+                Попробовать самому
+              </Link>
             </div>
 
             {/* §15 §9: social proof рядом с CTA — снижает тревогу */}
