@@ -56,6 +56,38 @@ export default function GamePage() {
     setAnimKey(k => k + 1);
   }, [index]);
 
+  /* derived — safe before session loads */
+  const questions = ((session?.questions ?? []) as Question[]);
+  const total = questions.length;
+  const question = questions[index] ?? null;
+  const remaining = total - index - 1;
+
+  /* ── keyboard — must be before any conditional return ── */
+  useEffect(() => {
+    if (phase !== "playing" || !question) return;
+    function onKey(e: KeyboardEvent) {
+      if (question!.format === "quiz") {
+        if (selected !== null) return;
+        const i = parseInt(e.key) - 1;
+        const q = question as QuizQuestion;
+        if (i >= 0 && i < q.options.length) handleQuizAnswer(i, q);
+      } else if (question!.format === "truefalse") {
+        if (selected !== null) return;
+        const q = question as TrueFalseQuestion;
+        if (e.key === "ArrowLeft"  || e.key.toLowerCase() === "t") handleTrueFalse(true, q);
+        if (e.key === "ArrowRight" || e.key.toLowerCase() === "f") handleTrueFalse(false, q);
+      } else if (question!.format === "flashcard") {
+        if (!revealed && (e.key === " " || e.key === "Enter")) { e.preventDefault(); setRevealed(true); }
+        else if (revealed) {
+          if (e.key === "ArrowLeft")                               handleFlashcard(false);
+          if (e.key === "ArrowRight" || e.key === "Enter")        handleFlashcard(true);
+        }
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [phase, question, selected, revealed, score, index]); // eslint-disable-line
+
   if (!session) {
     return (
       <Center>
@@ -71,11 +103,6 @@ export default function GamePage() {
       </Center>
     );
   }
-
-  const questions = session.questions as Question[];
-  const total = questions.length;
-  const question = questions[index] ?? null;
-  const remaining = total - index - 1;
 
   /* ── submit ── */
   async function submitResults(finalScore: number) {
@@ -118,32 +145,6 @@ export default function GamePage() {
     answersRef.current = [...answersRef.current, knew];
     finishOrAdvance(knew);
   }
-
-  /* ── keyboard ── */
-  useEffect(() => {
-    if (phase !== "playing" || !question) return;
-    function onKey(e: KeyboardEvent) {
-      if (question!.format === "quiz") {
-        if (selected !== null) return;
-        const i = parseInt(e.key) - 1;
-        const q = question as QuizQuestion;
-        if (i >= 0 && i < q.options.length) handleQuizAnswer(i, q);
-      } else if (question!.format === "truefalse") {
-        if (selected !== null) return;
-        const q = question as TrueFalseQuestion;
-        if (e.key === "ArrowLeft"  || e.key.toLowerCase() === "t") handleTrueFalse(true, q);
-        if (e.key === "ArrowRight" || e.key.toLowerCase() === "f") handleTrueFalse(false, q);
-      } else if (question!.format === "flashcard") {
-        if (!revealed && (e.key === " " || e.key === "Enter")) { e.preventDefault(); setRevealed(true); }
-        else if (revealed) {
-          if (e.key === "ArrowLeft")                               handleFlashcard(false);
-          if (e.key === "ArrowRight" || e.key === "Enter")        handleFlashcard(true);
-        }
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [phase, question, selected, revealed, score, index]); // eslint-disable-line
 
   /* ══════════════════════ PHASES ══════════════════════ */
 
