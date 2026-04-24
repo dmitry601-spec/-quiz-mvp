@@ -5,12 +5,14 @@ export interface QuizQuestion {
   question: string;
   options: string[];
   correct: number;
+  explanation?: string;
 }
 
 export interface TrueFalseQuestion {
   format: "truefalse";
   question: string;
   correct: boolean;
+  explanation?: string;
 }
 
 export interface FlashcardQuestion {
