@@ -208,6 +208,31 @@ function ResultsContent() {
   );
 }
 
+function StatusDot({ ok, neutral }: { ok: boolean; neutral?: boolean }) {
+  return (
+    <div style={{
+      flexShrink: 0, width: "26px", height: "26px", borderRadius: "50%",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      background: ok ? OK_BG : neutral ? "#F5F5F7" : ERR_BG,
+      border: `1.5px solid ${ok ? OK_BORDER : neutral ? "#E1E1E1" : ERR_BDR}`,
+    }}>
+      {ok ? (
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke={OK_TEXT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M1.5 5.5l2.5 2.5 5.5-5.5" />
+        </svg>
+      ) : neutral ? (
+        <svg width="9" height="2" viewBox="0 0 9 2" fill="none" stroke="#ACACAD" strokeWidth="2" strokeLinecap="round">
+          <line x1="0" y1="1" x2="9" y2="1" />
+        </svg>
+      ) : (
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke={ERR_TEXT} strokeWidth="2" strokeLinecap="round">
+          <path d="M1 1l7 7M8 1L1 8" />
+        </svg>
+      )}
+    </div>
+  );
+}
+
 function QuizBreakdown({ idx, q, userAnswer }: { idx: number; q: QuizQuestion; userAnswer: number }) {
   const isCorrect = userAnswer === q.correct;
   return (
@@ -217,14 +242,7 @@ function QuizBreakdown({ idx, q, userAnswer }: { idx: number; q: QuizQuestion; u
     }}>
       {/* Header */}
       <div style={{ padding: "16px 20px", display: "flex", alignItems: "flex-start", gap: "12px", borderBottom: `1px solid ${BORDER}` }}>
-        <span style={{
-          flexShrink: 0, width: "26px", height: "26px", borderRadius: "50%",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "13px", fontWeight: 700,
-          background: isCorrect ? OK_BG : ERR_BG,
-          color: isCorrect ? OK_TEXT : ERR_TEXT,
-          border: `1px solid ${isCorrect ? OK_BORDER : ERR_BDR}`,
-        }}>{isCorrect ? "✓" : "✗"}</span>
+        <StatusDot ok={isCorrect} />
         <p style={{ fontSize: "15px", fontWeight: 600, color: INK, lineHeight: 1.45, flex: 1 }}>
           <span style={{ fontSize: "12px", color: "#ACACAD", fontWeight: 500, display: "block", marginBottom: "3px" }}>Вопрос {idx + 1}</span>
           {q.question}
@@ -235,12 +253,12 @@ function QuizBreakdown({ idx, q, userAnswer }: { idx: number; q: QuizQuestion; u
       <div style={{ padding: "14px 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         {!isCorrect && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: ERR_BG, border: `1px solid ${ERR_BDR}`, borderRadius: "10px" }}>
-            <span style={{ fontSize: "13px", color: ERR_TEXT, fontWeight: 700, flexShrink: 0 }}>✗ Ваш ответ:</span>
+            <span style={{ fontSize: "13px", color: ERR_TEXT, fontWeight: 700, flexShrink: 0 }}>Ваш ответ:</span>
             <span style={{ fontSize: "14px", color: ERR_TEXT }}>{q.options[userAnswer] ?? "—"}</span>
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: OK_BG, border: `1px solid ${OK_BORDER}`, borderRadius: "10px" }}>
-          <span style={{ fontSize: "13px", color: OK_TEXT, fontWeight: 700, flexShrink: 0 }}>✓ Правильно:</span>
+          <span style={{ fontSize: "13px", color: OK_TEXT, fontWeight: 700, flexShrink: 0 }}>Правильно:</span>
           <span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>{q.options[q.correct]}</span>
         </div>
         {q.explanation && (
@@ -263,14 +281,7 @@ function TrueFalseBreakdown({ idx, q, userAnswer }: { idx: number; q: TrueFalseQ
       borderRadius: "18px", overflow: "hidden",
     }}>
       <div style={{ padding: "16px 20px", display: "flex", alignItems: "flex-start", gap: "12px", borderBottom: `1px solid ${BORDER}` }}>
-        <span style={{
-          flexShrink: 0, width: "26px", height: "26px", borderRadius: "50%",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "13px", fontWeight: 700,
-          background: isCorrect ? OK_BG : ERR_BG,
-          color: isCorrect ? OK_TEXT : ERR_TEXT,
-          border: `1px solid ${isCorrect ? OK_BORDER : ERR_BDR}`,
-        }}>{isCorrect ? "✓" : "✗"}</span>
+        <StatusDot ok={isCorrect} />
         <p style={{ fontSize: "15px", fontWeight: 600, color: INK, lineHeight: 1.45, flex: 1 }}>
           <span style={{ fontSize: "12px", color: "#ACACAD", fontWeight: 500, display: "block", marginBottom: "3px" }}>Вопрос {idx + 1}</span>
           {q.question}
@@ -279,12 +290,12 @@ function TrueFalseBreakdown({ idx, q, userAnswer }: { idx: number; q: TrueFalseQ
       <div style={{ padding: "14px 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         {!isCorrect && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: ERR_BG, border: `1px solid ${ERR_BDR}`, borderRadius: "10px" }}>
-            <span style={{ fontSize: "13px", color: ERR_TEXT, fontWeight: 700 }}>✗ Ваш ответ:</span>
+            <span style={{ fontSize: "13px", color: ERR_TEXT, fontWeight: 700 }}>Ваш ответ:</span>
             <span style={{ fontSize: "14px", color: ERR_TEXT }}>{label(userAnswer)}</span>
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: OK_BG, border: `1px solid ${OK_BORDER}`, borderRadius: "10px" }}>
-          <span style={{ fontSize: "13px", color: OK_TEXT, fontWeight: 700 }}>✓ Правильно:</span>
+          <span style={{ fontSize: "13px", color: OK_TEXT, fontWeight: 700 }}>Правильно:</span>
           <span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>{label(q.correct)}</span>
         </div>
         {q.explanation && (
@@ -305,14 +316,7 @@ function FlashcardBreakdown({ idx, q, knew }: { idx: number; q: FlashcardQuestio
       borderRadius: "18px", overflow: "hidden",
     }}>
       <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", gap: "12px" }}>
-        <span style={{
-          flexShrink: 0, width: "26px", height: "26px", borderRadius: "50%",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "13px", fontWeight: 700,
-          background: knew ? OK_BG : SURFACE,
-          color: knew ? OK_TEXT : "#ACACAD",
-          border: `1px solid ${knew ? OK_BORDER : BORDER}`,
-        }}>{knew ? "✓" : "—"}</span>
+        <StatusDot ok={knew} neutral={!knew} />
         <div style={{ flex: 1 }}>
           <span style={{ fontSize: "12px", color: "#ACACAD", fontWeight: 500, display: "block", marginBottom: "2px" }}>Карточка {idx + 1} · {knew ? "Знал" : "Не знал"}</span>
           <p style={{ fontSize: "15px", fontWeight: 700, color: INK }}>{q.front}</p>

@@ -376,8 +376,12 @@ export default function GamePage() {
                 return (
                   <div key={i} style={{ background: WHITE, border: `1px solid ${isCorrect ? OK_BDR : ERR_BDR}`, borderRadius: "16px", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                      <span style={{ flexShrink: 0, width: "22px", height: "22px", borderRadius: "50%", background: isCorrect ? OK_BG : ERR_BG, border: `1.5px solid ${isCorrect ? OK_BDR : ERR_BDR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 700, color: isCorrect ? OK_TEXT : ERR_TEXT, marginTop: "1px" }}>
-                        {isCorrect ? "✓" : "✗"}
+                      <span style={{ flexShrink: 0, width: "22px", height: "22px", borderRadius: "50%", background: isCorrect ? OK_BG : ERR_BG, border: `1.5px solid ${isCorrect ? OK_BDR : ERR_BDR}`, display: "flex", alignItems: "center", justifyContent: "center", marginTop: "1px" }}>
+                        {isCorrect ? (
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke={OK_TEXT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+                        ) : (
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke={ERR_TEXT} strokeWidth="2" strokeLinecap="round"><path d="M1 1l6 6M7 1L1 7"/></svg>
+                        )}
                       </span>
                       <p style={{ fontSize: "14px", fontWeight: 600, color: INK, lineHeight: 1.5 }}>
                         {q.format === "flashcard" ? (q as FlashcardQuestion).front
@@ -392,12 +396,12 @@ export default function GamePage() {
                         <div style={{ paddingLeft: "32px", display: "flex", flexDirection: "column", gap: "5px" }}>
                           {!isCorrect && ua !== -1 && (
                             <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: ERR_BG, border: `1px solid ${ERR_BDR}`, color: ERR_TEXT, fontWeight: 600 }}>
-                              ✗ Вы: {qq.options[ua as number]}
+                              Вы: {qq.options[ua as number]}
                             </div>
                           )}
                           {ua === -1 && <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: "#FFF7ED", border: "1px solid #FCD34D", color: "#92400E", fontWeight: 600 }}>Время вышло</div>}
                           <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 600 }}>
-                            ✓ {qq.options[qq.correct]}
+                            Правильно: {qq.options[qq.correct]}
                           </div>
                         </div>
                       );
@@ -406,7 +410,7 @@ export default function GamePage() {
                     {q.format === "truefalse" && !isCorrect && (
                       <div style={{ paddingLeft: "32px", display: "flex", flexDirection: "column", gap: "5px" }}>
                         <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: ERR_BG, border: `1px solid ${ERR_BDR}`, color: ERR_TEXT, fontWeight: 600 }}>
-                          ✗ Вы: {ua ? "Правда" : "Ложь"} · Верно: {(q as TrueFalseQuestion).correct ? "Правда" : "Ложь"}
+                          Вы: {ua ? "Правда" : "Ложь"} · Верно: {(q as TrueFalseQuestion).correct ? "Правда" : "Ложь"}
                         </div>
                       </div>
                     )}
@@ -414,7 +418,7 @@ export default function GamePage() {
                     {q.format === "fillblank" && !isCorrect && (
                       <div style={{ paddingLeft: "32px", display: "flex", flexDirection: "column", gap: "5px" }}>
                         <div style={{ fontSize: "13px", padding: "7px 11px", borderRadius: "8px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 600 }}>
-                          ✓ Правильный ответ: {(q as FillBlankQuestion).answer}
+                          Правильный ответ: {(q as FillBlankQuestion).answer}
                         </div>
                       </div>
                     )}
@@ -496,7 +500,7 @@ export default function GamePage() {
                     onMouseEnter={e => { if (!isMatched && !isSelected) (e.currentTarget as HTMLElement).style.borderColor = BLUE; }}
                     onMouseLeave={e => { if (!isMatched && !isSelected) (e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
                   >
-                    {isMatched ? "✓ " : ""}{pair.left}
+                    {pair.left}
                   </button>
                 );
               })}
@@ -523,7 +527,7 @@ export default function GamePage() {
                     onMouseEnter={e => { if (!isMatched && selectedLeft !== null) (e.currentTarget as HTMLElement).style.borderColor = BLUE; }}
                     onMouseLeave={e => { if (!isMatched && !isWrong) (e.currentTarget as HTMLElement).style.borderColor = selectedLeft !== null ? BLUE_MID : BORDER; }}
                   >
-                    {isMatched ? "✓ " : ""}{pairs[origIdx].right}
+                    {pairs[origIdx].right}
                   </button>
                 );
               })}
@@ -681,7 +685,7 @@ function TrueFalseCard({ question, selected, onAnswer }: { question: TrueFalseQu
               style={{ borderRadius: "14px", border: `1.5px solid ${s.borderColor}`, padding: "24px 12px", fontFamily: "inherit", fontSize: "15px", fontWeight: 700, background: s.background, color: s.color, cursor: selected !== null ? "default" : "pointer", transition: "all .15s" }}
               onMouseEnter={e => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BLUE; }}
               onMouseLeave={e => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
-            >{v ? "✓  Правда" : "✗  Ложь"}</button>
+            >{v ? "Правда" : "Ложь"}</button>
           );
         })}
       </div>
@@ -711,11 +715,11 @@ function FlashcardCard({ question, revealed, onReveal, onNext }: { question: Fla
             <button onClick={() => onNext(false)} style={{ borderRadius: "12px", border: `1.5px solid ${ERR_BDR}`, padding: "14px", fontFamily: "inherit", fontSize: "14px", fontWeight: 700, color: ERR_TEXT, background: ERR_BG, cursor: "pointer", transition: "opacity .15s" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.8"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
-            >✗  Не знал</button>
+            >Не знал</button>
             <button onClick={() => onNext(true)} style={{ borderRadius: "12px", border: `1.5px solid ${OK_BDR}`, padding: "14px", fontFamily: "inherit", fontSize: "14px", fontWeight: 700, color: OK_TEXT, background: OK_BG, cursor: "pointer", transition: "opacity .15s" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.8"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
-            >✓  Знал</button>
+            >Знал</button>
           </div>
         </div>
       )}
@@ -762,12 +766,12 @@ function FillBlankCard({ question, input, submitted, onChange, onSubmit, onNext 
       {/* Result */}
       {submitted && isWrong && (
         <div style={{ fontSize: "14px", padding: "10px 14px", borderRadius: "10px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 600 }}>
-          ✓ Правильный ответ: <strong>{question.answer}</strong>
+          Правильный ответ: <strong>{question.answer}</strong>
         </div>
       )}
       {submitted && isCorrect && (
         <div style={{ fontSize: "14px", padding: "10px 14px", borderRadius: "10px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 700 }}>
-          ✓ Правильно!
+          Правильно!
         </div>
       )}
       {submitted && question.explanation && (

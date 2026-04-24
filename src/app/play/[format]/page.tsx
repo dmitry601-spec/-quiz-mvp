@@ -337,7 +337,7 @@ function TrueFalseCard({ question, selected, onAnswer }: {
               onMouseEnter={(e) => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BLUE; }}
               onMouseLeave={(e) => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
             >
-              {v ? "✓  Правда" : "✗  Ложь"}
+              {v ? "Правда" : "Ложь"}
             </button>
           );
         })}
@@ -379,11 +379,11 @@ function FlashcardCard({ question, revealed, onReveal, onNext }: {
             <button onClick={() => onNext(false)} style={{ borderRadius: "14px", border: `1.5px solid ${ERR_BORDER}`, padding: "16px", minHeight: "56px", fontFamily: "'Golos Text', system-ui, sans-serif", fontSize: "15px", fontWeight: 700, color: ERR_TEXT, background: ERR_BG, cursor: "pointer", transition: "opacity .15s, transform .1s" }}
               onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.82"; el.style.transform = "scale(0.98)"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "1"; el.style.transform = "none"; }}
-            >✗  Не знал</button>
+            >Не знал</button>
             <button onClick={() => onNext(true)} style={{ borderRadius: "14px", border: `1.5px solid ${OK_BORDER}`, padding: "16px", minHeight: "56px", fontFamily: "'Golos Text', system-ui, sans-serif", fontSize: "15px", fontWeight: 700, color: OK_TEXT, background: OK_BG, cursor: "pointer", transition: "opacity .15s, transform .1s" }}
               onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.82"; el.style.transform = "scale(0.98)"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "1"; el.style.transform = "none"; }}
-            >✓  Знал</button>
+            >Знал</button>
           </div>
         </div>
       )}
