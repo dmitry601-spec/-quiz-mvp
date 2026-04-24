@@ -3,8 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
-  GameFormat, QuizQuestion, TrueFalseQuestion, FlashcardQuestion,
-  getQuestion, getTotal, FORMAT_LABELS,
+  GameFormat, Question, QuizQuestion, TrueFalseQuestion, FlashcardQuestion,
+  FORMAT_LABELS,
 } from "@/lib/questions";
 
 const BLUE       = "#6C8CFC";
@@ -26,14 +26,26 @@ export default function PlayPage() {
   const params = useParams();
   const router = useRouter();
   const format = params.format as GameFormat;
+  const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<number | boolean | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [animKey, setAnimKey] = useState(0);
 
-  const total = getTotal(format);
-  const question = getQuestion(format, index);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("playclass_questions");
+      if (!raw) { setLoadError(true); return; }
+      setQuestions(JSON.parse(raw));
+    } catch {
+      setLoadError(true);
+    }
+  }, []);
+
+  const total = questions?.length ?? 0;
+  const question = questions?.[index] ?? null;
   /* §15: принцип прогрессии — показываем сколько осталось */
   const remaining = total - index - 1;
 
@@ -117,6 +129,21 @@ export default function PlayPage() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [question, selected, revealed, score, index, total, format, router]);
+
+  if (loadError || (!questions && !loadError)) {
+    return (
+      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: SURFACE, flexDirection: "column", gap: "16px" }}>
+        {loadError ? (
+          <>
+            <p style={{ color: INK, fontFamily: "'Golos Text', system-ui, sans-serif", fontWeight: 600 }}>Вопросы не найдены</p>
+            <a href="/start" style={{ color: BLUE, fontSize: "14px", fontFamily: "'Golos Text', system-ui, sans-serif" }}>← Вернуться и сгенерировать игру</a>
+          </>
+        ) : (
+          <div style={{ width: 32, height: 32, border: `3px solid ${BLUE_MID}`, borderTopColor: BLUE, borderRadius: "50%", animation: "spin-anim 0.7s linear infinite" }} />
+        )}
+      </main>
+    );
+  }
 
   if (!question) {
     return (
