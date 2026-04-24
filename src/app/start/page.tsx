@@ -35,39 +35,38 @@ export default function StartPage() {
       padding: "64px 24px",
       fontFamily: "'Golos Text', system-ui, sans-serif",
     }}>
-      <div style={{ width: "100%", maxWidth: "480px", display: "flex", flexDirection: "column", gap: "40px" }}>
+      <div style={{ width: "100%", maxWidth: "480px", display: "flex", flexDirection: "column", gap: "32px" }}>
 
-        {/* Brand */}
-        <div style={{ animation: "fade-up 0.5s ease both", display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "#EFF6FF", border: "1px solid #D3DDFE",
-            borderRadius: "100px", padding: "6px 16px", width: "fit-content",
-          }}>
-            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#6C8CFC", display: "inline-block", flexShrink: 0 }} />
-            <span style={{ fontSize: "12px", fontWeight: 600, letterSpacing: ".3px", color: "#2B7FFF" }}>
-              AI-конструктор игр для репетиторов
-            </span>
+        {/* Back + Brand */}
+        <div style={{ animation: "fade-up 0.5s ease both", display: "flex", flexDirection: "column", gap: "20px" }}>
+          <a href="/" style={{
+            display: "inline-flex", alignItems: "center", gap: "6px",
+            fontSize: "13px", fontWeight: 600, color: "#ACACAD",
+            textDecoration: "none", transition: "color .15s",
+          }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#010B13"}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ACACAD"}
+          >
+            ← На главную
+          </a>
+
+          <div>
+            <div style={{ fontSize: "clamp(28px, 6vw, 40px)", fontWeight: 900, letterSpacing: "-1.2px", lineHeight: 1.1, color: "#010B13" }}>
+              Play<span style={{ color: "#6C8CFC" }}>Class</span>
+            </div>
+            <p style={{ fontSize: "17px", fontWeight: 700, color: "#010B13", marginTop: "10px", lineHeight: 1.35 }}>
+              Выберите формат игры
+            </p>
+            <p style={{ fontSize: "14px", color: "#666666", marginTop: "6px", lineHeight: 1.6 }}>
+              AI сгенерирует игру по вашей теме. Ученик откроет по ссылке, без регистрации.
+            </p>
           </div>
-
-          <div style={{ fontSize: "clamp(36px, 7vw, 52px)", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1.08, color: "#010B13" }}>
-            Play<span style={{ color: "#6C8CFC" }}>Class</span>
-          </div>
-
-          <p style={{ fontSize: "clamp(16px, 2.5vw, 19px)", fontWeight: 700, lineHeight: 1.3, color: "#010B13" }}>
-            Ученики не скучают.<br />
-            <span style={{ color: "#666666", fontWeight: 500 }}>Вы не готовитесь часами.</span>
-          </p>
-
-          <p style={{ fontSize: "15px", color: "#666666", lineHeight: 1.65 }}>
-            Выберите формат — AI сгенерирует игру по вашей теме. Ученик откроет по ссылке, без регистрации.
-          </p>
         </div>
 
         {/* Format cards */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" as const, color: "#6C8CFC", marginBottom: "6px" }}>
-            Выберите формат игры
+          <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" as const, color: "#6C8CFC", marginBottom: "4px" }}>
+            Доступные форматы
           </div>
           {formats.map((format, i) => (
             <FormatCard

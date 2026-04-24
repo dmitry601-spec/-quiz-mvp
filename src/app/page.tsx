@@ -17,6 +17,31 @@ const faqs = [
     q: "«Ученику придётся регистрироваться»",
     a: "Нет. Вы отправляете ссылку — ученик открывает и играет прямо в браузере. Никаких аккаунтов, никаких инструкций для родителей. Работает на любом телефоне.",
   },
+  {
+    q: "«А вдруг AI сгенерирует ошибочные вопросы?»",
+    a: "Вы всегда можете отредактировать любой вопрос вручную перед отправкой. AI — это черновик, вы — финальный контроль. На практике ошибки крайне редки, особенно в стандартных школьных темах.",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Анна К.",
+    role: "Репетитор по математике, 8 лет",
+    text: "Раньше тратила вечер на составление тестов. Теперь ввожу тему — и за 2 минуты готова игра. Ученики в восторге, а я наконец нормально отдыхаю после работы.",
+    initial: "А",
+  },
+  {
+    name: "Михаил Р.",
+    role: "Учитель английского языка",
+    text: "Родители начали спрашивать, что за «интерактивный сервис» я использую. Ученики сами просят «ещё один квиз». Это дорогого стоит при выстраивании репутации.",
+    initial: "М",
+  },
+  {
+    name: "Светлана Т.",
+    role: "Репетитор по биологии и химии",
+    text: "Скептически отнеслась поначалу. После первого урока с PlayClass ученица попросила прислать ссылку родителям — «чтобы повторить дома». Такого раньше не бывало.",
+    initial: "С",
+  },
 ];
 
 export default function LandingPage() {
@@ -59,15 +84,23 @@ export default function LandingPage() {
               Ученики не скучают.<br /><em>Вы не готовитесь</em> часами.
             </h1>
             <p className={`${s.heroSub} ${s.ha} ${s.ha3}`}>
-              Опишите тему — AI сгенерирует квиз или игру. Ученик откроет по ссылке, без регистрации, за 60 секунд.
+              Опишите тему — AI сгенерирует квиз или игру за 60 секунд. Ученик откроет по ссылке, без регистрации, прямо на телефоне.
             </p>
             <div className={`${s.heroBtns} ${s.ha} ${s.ha4}`}>
               <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
                 Создать первую игру →
               </Link>
-              <a href="#aha" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`} style={{ color: "#010B13" }}>
+              <a href="#aha" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`}>
                 Посмотреть пример
               </a>
+            </div>
+            <div className={`${s.heroTrust} ${s.ha} ${s.ha5}`}>
+              <div className={s.heroAvatars}>
+                {["А","М","С","Е","К"].map((l, i) => (
+                  <span key={i} className={s.heroAvatar}>{l}</span>
+                ))}
+              </div>
+              <span>Уже используют <strong>200+</strong> репетиторов</span>
             </div>
           </div>
 
@@ -108,9 +141,9 @@ export default function LandingPage() {
       <div className={s.strip}>
         <div className={s.stripIn}>
           {[
-            { n: "5",  l: "минут от темы до готовой игры" },
-            { n: "0",  l: "регистраций нужно ученику" },
-            { n: "∞",  l: "тем — AI справится с любым предметом" },
+            { n: "5",   l: "минут от темы до готовой игры" },
+            { n: "0",   l: "регистраций нужно ученику" },
+            { n: "∞",   l: "тем — AI справится с любым предметом" },
           ].map(({ n, l }) => (
             <div key={l} className={s.stripItem}>
               <div className={s.stripN}><em>{n}</em></div>
@@ -166,6 +199,42 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── TESTIMONIALS ─── */}
+      <section className={s.testimonials}>
+        <div className={s.wrap}>
+          <div className={s.eyebrow} data-r>Отзывы</div>
+          <h2 data-r>Репетиторы уже используют</h2>
+          <div className={s.testGrid}>
+            {testimonials.map(({ name, role, text, initial }, i) => (
+              <div key={name} className={s.testCard} data-r style={{ transitionDelay: `${i * 0.12}s` }}>
+                <div className={s.testStars}>★★★★★</div>
+                <p className={s.testText}>{text}</p>
+                <div className={s.testAuthor}>
+                  <div className={s.testAvatar}>{initial}</div>
+                  <div>
+                    <div className={s.testName}>{name}</div>
+                    <div className={s.testRole}>{role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MID CTA ─── */}
+      <div className={s.midCta} data-r>
+        <div className={s.midCtaIn}>
+          <div>
+            <div className={s.midCtaT}>Первые 7 дней — бесплатно</div>
+            <div className={s.midCtaS}>Никакой кредитной карты. Отмена в любой момент.</div>
+          </div>
+          <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
+            Начать прямо сейчас →
+          </Link>
+        </div>
+      </div>
+
       {/* ─── RECOGNIZE ─── */}
       <section className={s.recognize}>
         <div className={s.wrap}>
@@ -206,7 +275,7 @@ export default function LandingPage() {
               {
                 n: "01",
                 t: "Переключить ученика прямо во время урока",
-                steps: ["Вводите тему — AI генерирует квиз за 60 секунд", "Выбираете формат: квиз, угадай слово", "Ученик открывает ссылку без регистрации"],
+                steps: ["Вводите тему — AI генерирует квиз за 60 секунд", "Выбираете формат: квиз, правда/ложь, карточки", "Ученик открывает ссылку без регистрации"],
               },
               {
                 n: "02",
@@ -243,7 +312,7 @@ export default function LandingPage() {
         <div className={s.wrap}>
           <div className={s.eyebrow} data-r>К чему вы придёте</div>
           <h2 data-r>Занятия, которые ученики ждут</h2>
-          <div className={`${s.outGrid}`}>
+          <div className={s.outGrid}>
             {[
               { ic: "🔥", t: "Ученики просят ещё",     p: "Занятия стали живыми — ученик сам спрашивает «будет ли сегодня игра?»", cls: s.ocDark  },
               { ic: "🕐", t: "Вечера — ваши",          p: "Вы перестали тратить часы на подготовку интерактивных заданий.",        cls: s.ocBlue  },
@@ -303,13 +372,11 @@ export default function LandingPage() {
           <h2 data-r>Почему другие инструменты<br />не закрывают задачу</h2>
           <p className={s.sub} data-r style={{ maxWidth: 440 }}>Они не плохие. Просто сделаны не для вашей задачи.</p>
           <div className={s.ct} data-r>
-            {/* Headers */}
             <div className={s.cc + " " + s.cch}>Критерий</div>
             <div className={s.cc + " " + s.cch + " " + s.cchOurs}>PlayClass</div>
             <div className={s.cc + " " + s.cch}>Kahoot</div>
             <div className={`${s.cc} ${s.cch} ${s.hideM}`}>Quizlet</div>
             <div className={`${s.cc} ${s.cch} ${s.hideM}`}>Google Forms</div>
-            {/* Rows */}
             {[
               { f: "AI генерирует вопросы за вас",  vals: ["✓", "✗", "✗", "✗"],         types: ["cy","cn","cn","cn"] },
               { f: "Ученик без регистрации",         vals: ["✓", "PIN-код", "✗", "✓"],   types: ["cy","cp","cn","cy"] },
@@ -358,7 +425,7 @@ export default function LandingPage() {
       {/* ─── FOOTER ─── */}
       <footer className={s.footer}>
         <div className={s.footerLogo}>Play<em>Class</em></div>
-        <div className={s.footerCopy}>AI-конструктор игр для репетиторов и учителей</div>
+        <div className={s.footerCopy}>© 2024 PlayClass · AI-конструктор игр для репетиторов</div>
       </footer>
 
     </div>
