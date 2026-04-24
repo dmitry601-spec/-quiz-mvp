@@ -119,10 +119,10 @@ export default function GamePage() {
 
   function finishOrAdvance(isCorrect: boolean) {
     const newScore = isCorrect ? score + 1 : score;
+    setScore(newScore);
     if (index + 1 >= total) {
       submitResults(newScore);
     } else {
-      setScore(newScore);
       setIndex(i => i + 1);
     }
   }
@@ -208,35 +208,117 @@ export default function GamePage() {
     const ringColor = pct >= 80 ? BLUE : pct >= 50 ? "#F59E0B" : "#FB2C36";
 
     return (
-      <main style={{ minHeight: "100vh", background: SURFACE, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", fontFamily: "'Golos Text', system-ui, sans-serif" }}>
-        <div style={{ width: "100%", maxWidth: "400px", display: "flex", flexDirection: "column", alignItems: "center", gap: "24px", animation: "pop-in 0.5s ease both" }}>
-          <div style={{ position: "relative", width: "120px", height: "120px" }}>
-            <svg viewBox="0 0 100 100" style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
-              <circle cx="50" cy="50" r="44" fill="none" stroke={BORDER} strokeWidth="7" />
-              <circle cx="50" cy="50" r="44" fill="none" stroke={ringColor} strokeWidth="7"
-                strokeDasharray={`${2 * Math.PI * 44 * (pct / 100)} ${2 * Math.PI * 44}`}
-                strokeLinecap="round" style={{ transition: "stroke-dasharray 1s ease" }} />
-            </svg>
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "26px", fontWeight: 900, color: ringColor }}>{pct}%</span>
+      <main style={{ minHeight: "100vh", background: SURFACE, padding: "48px 24px 80px", fontFamily: "'Golos Text', system-ui, sans-serif" }}>
+        <div style={{ width: "100%", maxWidth: "560px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "20px" }}>
+
+          {/* Score card */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", animation: "pop-in 0.5s ease both" }}>
+            <div style={{ position: "relative", width: "110px", height: "110px" }}>
+              <svg viewBox="0 0 100 100" style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
+                <circle cx="50" cy="50" r="44" fill="none" stroke={BORDER} strokeWidth="7" />
+                <circle cx="50" cy="50" r="44" fill="none" stroke={ringColor} strokeWidth="7"
+                  strokeDasharray={`${2 * Math.PI * 44 * (pct / 100)} ${2 * Math.PI * 44}`}
+                  strokeLinecap="round" style={{ transition: "stroke-dasharray 1s ease" }} />
+              </svg>
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: "24px", fontWeight: 900, color: ringColor }}>{pct}%</span>
+              </div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <p style={{ fontSize: "22px", fontWeight: 900, color: INK }}>{grade}</p>
+              <p style={{ fontSize: "14px", color: MID, marginTop: "4px" }}>{score} из {total} · {studentName}</p>
+            </div>
+            <div style={{ background: phase === "done" ? OK_BG : SURFACE, border: `1px solid ${phase === "done" ? OK_BDR : BORDER}`, borderRadius: "14px", padding: "14px 20px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }}>
+              {phase === "submitting" ? (
+                <><Spinner /><span style={{ fontSize: "14px", color: MID }}>Отправляем результат учителю…</span></>
+              ) : (
+                <><span style={{ fontSize: "16px" }}>✅</span><span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>Результат отправлен {session.teacherName}!</span></>
+              )}
             </div>
           </div>
 
-          <div style={{ textAlign: "center" }}>
-            <p style={{ fontSize: "24px", fontWeight: 900, color: INK }}>{grade}</p>
-            <p style={{ fontSize: "15px", color: MID, marginTop: "6px" }}>{score} из {total} · {studentName}</p>
-          </div>
-
-          <div style={{ background: phase === "done" ? OK_BG : SURFACE, border: `1px solid ${phase === "done" ? OK_BDR : BORDER}`, borderRadius: "16px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "12px", width: "100%" }}>
-            {phase === "submitting" ? (
-              <><Spinner /><span style={{ fontSize: "14px", color: MID }}>Отправляем результат учителю…</span></>
-            ) : (
-              <><span style={{ fontSize: "18px" }}>✅</span><span style={{ fontSize: "14px", color: OK_TEXT, fontWeight: 600 }}>Результат отправлен {session.teacherName}!</span></>
-            )}
-          </div>
-
+          {/* Breakdown */}
           {phase === "done" && (
-            <a href={`/game/${sessionId}`} style={{ fontSize: "14px", color: BLUE, fontWeight: 600, textDecoration: "none" }}>Пройти ещё раз</a>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", animation: "fade-up 0.4s ease 200ms both" }}>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: MID, letterSpacing: "1.5px", textTransform: "uppercase", marginTop: "8px" }}>
+                Разбор игры
+              </div>
+              {questions.map((q, i) => {
+                const userAnswer = answersRef.current[i];
+                const isCorrect =
+                  q.format === "quiz" ? userAnswer === (q as QuizQuestion).correct :
+                  q.format === "truefalse" ? userAnswer === (q as TrueFalseQuestion).correct :
+                  userAnswer === true;
+
+                return (
+                  <div key={i} style={{ background: WHITE, border: `1px solid ${isCorrect ? OK_BDR : ERR_BDR}`, borderRadius: "16px", padding: "18px 20px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {/* Header */}
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                      <span style={{ flexShrink: 0, width: "22px", height: "22px", borderRadius: "50%", background: isCorrect ? OK_BG : ERR_BG, border: `1.5px solid ${isCorrect ? OK_BDR : ERR_BDR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 700, color: isCorrect ? OK_TEXT : ERR_TEXT, marginTop: "1px" }}>
+                        {isCorrect ? "✓" : "✗"}
+                      </span>
+                      <p style={{ fontSize: "14px", fontWeight: 600, color: INK, lineHeight: 1.5 }}>
+                        {q.format === "flashcard" ? (q as FlashcardQuestion).front : (q as QuizQuestion | TrueFalseQuestion).question}
+                      </p>
+                    </div>
+
+                    {/* Quiz answers */}
+                    {q.format === "quiz" && (() => {
+                      const qq = q as QuizQuestion;
+                      return (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px", paddingLeft: "32px" }}>
+                          {qq.options.map((opt, oi) => {
+                            const isOpt = oi === qq.correct;
+                            const isUser = oi === userAnswer;
+                            if (!isOpt && !isUser) return null;
+                            return (
+                              <div key={oi} style={{ fontSize: "13px", padding: "8px 12px", borderRadius: "8px", background: isOpt ? OK_BG : ERR_BG, border: `1px solid ${isOpt ? OK_BDR : ERR_BDR}`, color: isOpt ? OK_TEXT : ERR_TEXT, fontWeight: 600 }}>
+                                {isOpt && !isUser ? "✓ " : isUser && !isOpt ? "✗ Вы ответили: " : "✓ "}{opt}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
+
+                    {/* True/False answers */}
+                    {q.format === "truefalse" && (() => {
+                      const tq = q as TrueFalseQuestion;
+                      return (
+                        <div style={{ paddingLeft: "32px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                          {!isCorrect && (
+                            <div style={{ fontSize: "13px", padding: "8px 12px", borderRadius: "8px", background: ERR_BG, border: `1px solid ${ERR_BDR}`, color: ERR_TEXT, fontWeight: 600 }}>
+                              ✗ Вы ответили: {userAnswer ? "Правда" : "Ложь"}
+                            </div>
+                          )}
+                          <div style={{ fontSize: "13px", padding: "8px 12px", borderRadius: "8px", background: OK_BG, border: `1px solid ${OK_BDR}`, color: OK_TEXT, fontWeight: 600 }}>
+                            ✓ Правильно: {tq.correct ? "Правда" : "Ложь"}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Flashcard */}
+                    {q.format === "flashcard" && (
+                      <div style={{ paddingLeft: "32px", fontSize: "13px", color: MID, lineHeight: 1.6, background: SURFACE, borderRadius: "8px", padding: "10px 12px 10px 12px" }}>
+                        {(q as FlashcardQuestion).back}
+                      </div>
+                    )}
+
+                    {/* Explanation */}
+                    {(q as QuizQuestion).explanation && (
+                      <div style={{ paddingLeft: "32px", fontSize: "13px", color: "#3B5FC0", lineHeight: 1.6, background: "#EFF6FF", border: "1px solid #D3DDFE", borderRadius: "8px", padding: "10px 12px" }}>
+                        💡 {(q as QuizQuestion).explanation}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              <a href={`/game/${sessionId}`} style={{ display: "block", textAlign: "center", fontSize: "14px", color: BLUE, fontWeight: 600, textDecoration: "none", padding: "12px" }}>
+                Пройти ещё раз
+              </a>
+            </div>
           )}
         </div>
       </main>

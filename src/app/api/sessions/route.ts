@@ -11,6 +11,20 @@ const DIFFICULTY_RU: Record<string, string> = {
   hard:   "Вопросы сложные — затрагивают нюансы, требуют глубокого знания темы.",
 };
 
+function shuffleQuizOptions(questions: unknown[]): unknown[] {
+  return questions.map(q => {
+    const item = q as Record<string, unknown>;
+    if (item.format !== "quiz" || !Array.isArray(item.options)) return q;
+    const options = [...item.options];
+    const correctOption = options[item.correct as number];
+    for (let i = options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [options[i], options[j]] = [options[j], options[i]];
+    }
+    return { ...item, options, correct: options.indexOf(correctOption) };
+  });
+}
+
 function buildPrompt(topic: string, format: GameFormat, count: number, difficulty: string): string {
   const d = DIFFICULTY_RU[difficulty] ?? DIFFICULTY_RU.medium;
   if (format === "quiz") return `Создай ${count} вопросов квиза на тему "${topic}". ${d}
@@ -41,7 +55,7 @@ export async function POST(req: NextRequest) {
     const match = raw.match(/\[[\s\S]*\]/);
     if (!match) return NextResponse.json({ error: "AI вернул неверный формат" }, { status: 502 });
 
-    const questions = JSON.parse(match[0]);
+    const questions = shuffleQuizOptions(JSON.parse(match[0])) as import("@/lib/questions").Question[];
     const session = {
       id: generateId(),
       topic: topic.trim(),
