@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconQuiz, IconTrueFalse, IconFlashcard, IconFillBlank, IconMatching } from "@/app/icons";
 
 const COUNTS = [5, 10, 15] as const;
 const DIFFICULTIES = [
@@ -9,13 +10,14 @@ const DIFFICULTIES = [
   { key: "medium", label: "Средний", color: "#B45309", bg: "#FFFBEB", border: "#FCD34D" },
   { key: "hard",   label: "Сложный", color: "#DC2626", bg: "#FFF0F0", border: "#FCA5A5" },
 ] as const;
-const FORMATS = [
-  { key: "quiz",      icon: "🧠", label: "Квиз",              desc: "4 варианта + таймер на каждый вопрос" },
-  { key: "truefalse", icon: "⚡", label: "Правда или ложь",  desc: "Быстрые бинарные суждения" },
-  { key: "flashcard", icon: "📖", label: "Флеш-карточки",    desc: "Термин → показать определение" },
-  { key: "fillblank", icon: "✏️", label: "Заполни пропуск",  desc: "Вставь пропущенное слово" },
-  { key: "matching",  icon: "🔗", label: "Сопоставление",    desc: "Соедини термин с определением" },
-] as const;
+type FormatEntry = { key: string; Icon: (p: { size?: number }) => React.ReactElement; label: string; desc: string };
+const FORMATS: FormatEntry[] = [
+  { key: "quiz",      Icon: IconQuiz,       label: "Квиз",             desc: "4 варианта + таймер на каждый вопрос" },
+  { key: "truefalse", Icon: IconTrueFalse,  label: "Правда или ложь",  desc: "Быстрые бинарные суждения" },
+  { key: "flashcard", Icon: IconFlashcard,  label: "Флеш-карточки",    desc: "Термин → показать определение" },
+  { key: "fillblank", Icon: IconFillBlank,  label: "Заполни пропуск",  desc: "Вставь пропущенное слово" },
+  { key: "matching",  Icon: IconMatching,   label: "Сопоставление",    desc: "Соедини термин с определением" },
+];
 
 export default function TeacherPage() {
   const router = useRouter();
@@ -103,7 +105,7 @@ export default function TeacherPage() {
                   transition: "all .15s",
                 }}
               >
-                <span style={{ fontSize: "20px", width: "36px", textAlign: "center", flexShrink: 0 }}>{f.icon}</span>
+                <span style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: format === f.key ? "#6C8CFC" : "#888899" }}><f.Icon size={20} /></span>
                 <div>
                   <div style={{ fontSize: "14px", fontWeight: 700, color: format === f.key ? "#6C8CFC" : "#010B13" }}>{f.label}</div>
                   <div style={{ fontSize: "12px", color: "#888899", marginTop: "2px" }}>{f.desc}</div>

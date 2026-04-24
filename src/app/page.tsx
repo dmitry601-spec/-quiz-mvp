@@ -3,6 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import s from "./landing.module.css";
+import {
+  IconZap, IconStar, IconClock, IconBarChart,
+  IconTrendingUp, IconMoon, IconShield, IconUsers, IconDiamond, IconShare,
+  IconEye, IconPencil, IconLink,
+} from "./icons";
 
 const faqs = [
   {
@@ -205,14 +210,14 @@ export default function LandingPage() {
           <div className={s.eyebrow} data-r>Что вы получите</div>
           <h2 data-r>Всё, что нужно для живого урока</h2>
           <div className={s.bGrid}>
-            {[
-              { ic: "🎮", t: "Ученик включается снова", p: "Даже если устал и думает о своём — игровой формат перехватывает внимание. Азарт работает там, где не работают объяснения." },
-              { ic: "⭐", t: "Вы выглядите современно", p: "Родители видят интерактивный подход и рассказывают о вас знакомым. Сарафанное радио работает лучше, когда есть что рассказать." },
-              { ic: "⚡", t: "Подготовка за 5 минут, не за 30", p: "AI придумывает вопросы по вашей теме вместо вас. Вы тратите вечер на отдых, а не на Google Forms." },
-              { ic: "📊", t: "Результаты без проверки вручную", p: "После прохождения вы сразу видите, как ученик справился. Никакой ручной проверки — только чистая статистика." },
-            ].map(({ ic, t, p }, i) => (
+            {([
+              { Icon: IconZap,      t: "Ученик включается снова", p: "Даже если устал и думает о своём — игровой формат перехватывает внимание. Азарт работает там, где не работают объяснения." },
+              { Icon: IconStar,     t: "Вы выглядите современно", p: "Родители видят интерактивный подход и рассказывают о вас знакомым. Сарафанное радио работает лучше, когда есть что рассказать." },
+              { Icon: IconClock,    t: "Подготовка за 5 минут, не за 30", p: "AI придумывает вопросы по вашей теме вместо вас. Вы тратите вечер на отдых, а не на Google Forms." },
+              { Icon: IconBarChart, t: "Результаты без проверки вручную", p: "После прохождения вы сразу видите, как ученик справился. Никакой ручной проверки — только чистая статистика." },
+            ] as const).map(({ Icon, t, p }, i) => (
               <div key={t} className={s.bcard} data-r style={{ transitionDelay: `${i * 0.1}s` }}>
-                <div className={s.bcardIc} aria-hidden="true">{ic}</div>
+                <div className={s.bcardIc} aria-hidden="true"><Icon size={22} /></div>
                 <h3>{t}</h3>
                 <p>{p}</p>
               </div>
@@ -307,26 +312,26 @@ export default function LandingPage() {
           <div className={s.eyebrow} data-r>К чему вы придёте</div>
           <h2 data-r>Занятия, которые ученики ждут</h2>
           <div className={s.outGrid}>
-            {[
-              { ic: "🔥", t: "Ученики просят ещё",     p: "Занятия стали живыми — ученик сам спрашивает «будет ли сегодня игра?»", cls: s.ocDark  },
-              { ic: "🕐", t: "Вечера — ваши",          p: "Вы перестали тратить часы на подготовку интерактивных заданий.",        cls: s.ocBlue  },
-              { ic: "💪", t: "Уверенность в себе",     p: "Вы один из самых современных репетиторов в нише — и это видно.",        cls: s.ocWhite },
-            ].map(({ ic, t, p, cls }, i) => (
+            {([
+              { Icon: IconTrendingUp, t: "Ученики просят ещё",  p: "Занятия стали живыми — ученик сам спрашивает «будет ли сегодня игра?»", cls: s.ocDark  },
+              { Icon: IconMoon,       t: "Вечера — ваши",       p: "Вы перестали тратить часы на подготовку интерактивных заданий.",        cls: s.ocBlue  },
+              { Icon: IconShield,     t: "Уверенность в себе",  p: "Вы один из самых современных репетиторов в нише — и это видно.",        cls: s.ocWhite },
+            ] as const).map(({ Icon, t, p, cls }, i) => (
               <div key={t} className={`${s.ocard} ${cls}`} data-r style={{ transitionDelay: `${i * 0.1}s` }}>
-                <div className={s.ocardIc} aria-hidden="true">{ic}</div>
+                <div className={s.ocardIc} aria-hidden="true"><Icon size={20} /></div>
                 <h4>{t}</h4>
                 <p>{p}</p>
               </div>
             ))}
           </div>
           <div className={`${s.outGrid} ${s.outGridSecond}`}>
-            {[
-              { ic: "📈", t: "Очередь из учеников",    p: "Вы выстроили поток и можете выбирать, с кем работать.",                              cls: s.ocWhite },
-              { ic: "💰", t: "Цена выше рынка",         p: "Берёте дороже конкурентов — и ученики остаются, потому что ценят качество.",        cls: s.ocBlue  },
-              { ic: "🤝", t: "Рекомендации без просьб", p: "Родители сами рассказывают о вас, потому что дети приходят с интересом.",           cls: s.ocDark  },
-            ].map(({ ic, t, p, cls }, i) => (
+            {([
+              { Icon: IconUsers,   t: "Очередь из учеников",    p: "Вы выстроили поток и можете выбирать, с кем работать.",                        cls: s.ocWhite },
+              { Icon: IconDiamond, t: "Цена выше рынка",         p: "Берёте дороже конкурентов — и ученики остаются, потому что ценят качество.",  cls: s.ocBlue  },
+              { Icon: IconShare,   t: "Рекомендации без просьб", p: "Родители сами рассказывают о вас, потому что дети приходят с интересом.",     cls: s.ocDark  },
+            ] as const).map(({ Icon, t, p, cls }, i) => (
               <div key={t} className={`${s.ocard} ${cls}`} data-r style={{ transitionDelay: `${i * 0.1}s` }}>
-                <div className={s.ocardIc} aria-hidden="true">{ic}</div>
+                <div className={s.ocardIc} aria-hidden="true"><Icon size={20} /></div>
                 <h4>{t}</h4>
                 <p>{p}</p>
               </div>
@@ -355,9 +360,9 @@ export default function LandingPage() {
             <Link href="/start" className={s.demoBtn}>Сгенерировать →</Link>
           </div>
           <div className={s.hints} data-r>
-            <div className={s.hItem}><span aria-hidden="true">👁️</span> Откройте на телефоне — глазами ученика</div>
-            <div className={s.hItem}><span aria-hidden="true">✏️</span> Отредактируйте любой вопрос</div>
-            <div className={s.hItem}><span aria-hidden="true">🔗</span> Скопируйте ссылку и отправьте</div>
+            <div className={s.hItem}><IconEye size={15} /> Откройте на телефоне — глазами ученика</div>
+            <div className={s.hItem}><IconPencil size={15} /> Отредактируйте любой вопрос</div>
+            <div className={s.hItem}><IconLink size={15} /> Скопируйте ссылку и отправьте</div>
           </div>
         </div>
       </section>

@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { GameFormat, FORMAT_LABELS, FORMAT_DESCRIPTIONS } from "@/lib/questions";
+import { IconQuiz, IconTrueFalse, IconFlashcard, IconFillBlank, IconMatching } from "@/app/icons";
 
-const FORMAT_ICONS: Record<GameFormat, string> = { quiz: "🧠", truefalse: "⚡", flashcard: "📖", fillblank: "✏️", matching: "🔗" };
+const FORMAT_ICONS: Record<GameFormat, React.ReactNode> = {
+  quiz:      <IconQuiz size={22} />,
+  truefalse: <IconTrueFalse size={22} />,
+  flashcard: <IconFlashcard size={22} />,
+  fillblank: <IconFillBlank size={22} />,
+  matching:  <IconMatching size={22} />,
+};
 const FORMAT_TIME: Record<GameFormat, string>  = { quiz: "~2 мин", truefalse: "~1 мин", flashcard: "~3 мин", fillblank: "~2 мин", matching: "~3 мин" };
 const FORMAT_BADGE: Record<GameFormat, string | null> = { quiz: "Популярное", truefalse: null, flashcard: null, fillblank: null, matching: null };
 
@@ -186,7 +193,7 @@ export default function StartPage() {
 }
 
 function FormatCard({ format, icon, time, badge, delay, loading, disabled, count, onClick }: {
-  format: GameFormat; icon: string; time: string; badge: string | null;
+  format: GameFormat; icon: React.ReactNode; time: string; badge: string | null;
   delay: number; loading: boolean; disabled: boolean; count: number; onClick: () => void;
 }) {
   const mins = format === "quiz" ? Math.round(count * 0.4) : format === "truefalse" ? Math.round(count * 0.2) : Math.round(count * 0.6);
@@ -220,11 +227,12 @@ function FormatCard({ format, icon, time, badge, delay, loading, disabled, count
       }}
     >
       <div style={{
-        fontSize: "22px", width: "46px", height: "46px",
+        width: "46px", height: "46px",
         display: "flex", alignItems: "center", justifyContent: "center",
         background: loading ? "#EFF6FF" : "#F5F5F7",
         border: `1px solid ${loading ? "#D3DDFE" : "#E1E1E1"}`,
         borderRadius: "12px", flexShrink: 0,
+        color: "#6C8CFC",
       }}>
         {loading ? <Spinner /> : icon}
       </div>

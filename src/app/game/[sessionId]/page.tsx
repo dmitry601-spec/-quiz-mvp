@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import type { Session } from "@/lib/store";
+import { IconSearch } from "@/app/icons";
 import type {
   Question, QuizQuestion, TrueFalseQuestion, FlashcardQuestion,
   FillBlankQuestion, MatchingQuestion,
@@ -158,7 +159,9 @@ export default function GamePage() {
       <Center>
         {phase === "error" ? (
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "12px", alignItems: "center" }}>
-            <div style={{ fontSize: "40px" }}>🔍</div>
+            <div style={{ width: "56px", height: "56px", borderRadius: "16px", background: SURFACE, border: `1px solid ${BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", color: "#ACACAD" }}>
+              <IconSearch size={26} />
+            </div>
             <p style={{ fontSize: "17px", fontWeight: 700, color: INK }}>Игра не найдена</p>
             <p style={{ fontSize: "14px", color: MID }}>Попросите учителя прислать правильную ссылку</p>
           </div>
@@ -281,8 +284,11 @@ export default function GamePage() {
       <main style={{ minHeight: "100vh", background: SURFACE, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", fontFamily: "'Golos Text', system-ui, sans-serif" }}>
         <div style={{ width: "100%", maxWidth: "440px", display: "flex", flexDirection: "column", gap: "24px" }}>
           <div style={{ animation: "fade-up 0.4s ease both" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "100px", padding: "4px 12px", fontSize: "12px", fontWeight: 700, color: BLUE, marginBottom: "16px" }}>
-              👩‍🏫 {session.teacherName}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: BLUE_SOFT, border: `1px solid ${BLUE_MID}`, borderRadius: "100px", padding: "4px 12px 4px 4px", fontSize: "12px", fontWeight: 700, color: BLUE, marginBottom: "16px" }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: BLUE, color: WHITE, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>
+                {session.teacherName?.[0]?.toUpperCase() ?? "T"}
+              </div>
+              {session.teacherName}
             </div>
             <h1 style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, color: INK, letterSpacing: "-0.5px", lineHeight: 1.2 }}>{session.topic}</h1>
             <div style={{ display: "flex", gap: "8px", marginTop: "10px", flexWrap: "wrap" }}>

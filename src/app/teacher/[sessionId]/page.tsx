@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { Session, StudentResult } from "@/lib/store";
+import { IconLink, IconHourglass } from "@/app/icons";
 
 const BLUE     = "#6C8CFC";
 const INK      = "#010B13";
@@ -99,8 +100,8 @@ export default function TeacherDashboard() {
 
         {/* Share link card */}
         <div style={{ background: "#FFFFFF", border: `1.5px solid ${BLUE}`, borderRadius: "20px", padding: "20px 24px", animation: "fade-up 0.4s ease 80ms both" }}>
-          <div style={{ fontSize: "12px", fontWeight: 700, color: BLUE, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px" }}>
-            🔗 Ссылка для учеников
+          <div style={{ fontSize: "12px", fontWeight: 700, color: BLUE, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+            <IconLink size={14} /> Ссылка для учеников
           </div>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <div style={{ flex: 1, padding: "12px 16px", background: "#F5F5F7", borderRadius: "12px", fontSize: "14px", color: MID, fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -145,7 +146,9 @@ export default function TeacherDashboard() {
 
           {results.length === 0 ? (
             <div style={{ padding: "60px 24px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-              <div style={{ fontSize: "40px" }}>⏳</div>
+              <div style={{ width: "52px", height: "52px", borderRadius: "14px", background: "#F5F5F7", border: "1px solid #E1E1E1", display: "flex", alignItems: "center", justifyContent: "center", color: "#ACACAD" }}>
+                <IconHourglass size={26} />
+              </div>
               <p style={{ fontSize: "15px", fontWeight: 700, color: INK }}>Ждём учеников</p>
               <p style={{ fontSize: "13px", color: "#888899", maxWidth: "280px", lineHeight: 1.6 }}>Как только ученик завершит игру, его результат появится здесь автоматически</p>
             </div>
