@@ -11,7 +11,7 @@ const BLUE       = "#6C8CFC";
 const BLUE_SOFT  = "#EFF6FF";
 const BLUE_MID   = "#D3DDFE";
 const INK        = "#010B13";
-const MID        = "#666666";
+const MID        = "#555566"; /* §13: чуть темнее для контраста */
 const BORDER     = "#E1E1E1";
 const SURFACE    = "#F5F5F7";
 const WHITE      = "#FFFFFF";
@@ -34,6 +34,8 @@ export default function PlayPage() {
 
   const total = getTotal(format);
   const question = getQuestion(format, index);
+  /* §15: принцип прогрессии — показываем сколько осталось */
+  const remaining = total - index - 1;
 
   useEffect(() => {
     setSelected(null);
@@ -54,19 +56,18 @@ export default function PlayPage() {
   function handleQuizAnswer(i: number, q: QuizQuestion) {
     if (selected !== null) return;
     setSelected(i);
-    setTimeout(() => advance(i === q.correct), 750);
+    setTimeout(() => advance(i === q.correct), 800);
   }
 
   function handleTrueFalse(answer: boolean, q: TrueFalseQuestion) {
     if (selected !== null) return;
     setSelected(answer);
-    setTimeout(() => advance(answer === q.correct), 750);
+    setTimeout(() => advance(answer === q.correct), 800);
   }
 
-  // Keyboard shortcuts
+  /* §13: keyboard shortcuts */
   useEffect(() => {
     if (!question) return;
-
     function onKey(e: KeyboardEvent) {
       if (question!.format === "quiz") {
         if (selected !== null) return;
@@ -79,7 +80,7 @@ export default function PlayPage() {
             const ns = correct ? score + 1 : score;
             if (index + 1 >= total) router.push(`/results?score=${ns}&total=${total}&format=${format}`);
             else { setScore(ns); setIndex((i) => i + 1); }
-          }, 750);
+          }, 800);
         }
       } else if (question!.format === "truefalse") {
         if (selected !== null) return;
@@ -94,7 +95,7 @@ export default function PlayPage() {
             const ns = correct ? score + 1 : score;
             if (index + 1 >= total) router.push(`/results?score=${ns}&total=${total}&format=${format}`);
             else { setScore(ns); setIndex((i) => i + 1); }
-          }, 750);
+          }, 800);
         }
       } else if (question!.format === "flashcard") {
         if (!revealed && (e.key === " " || e.key === "Enter")) {
@@ -102,8 +103,7 @@ export default function PlayPage() {
           setRevealed(true);
         } else if (revealed) {
           if (e.key === "ArrowLeft") {
-            const ns = score;
-            if (index + 1 >= total) router.push(`/results?score=${ns}&total=${total}&format=${format}`);
+            if (index + 1 >= total) router.push(`/results?score=${score}&total=${total}&format=${format}`);
             else setIndex((i) => i + 1);
           }
           if (e.key === "ArrowRight" || e.key === "Enter") {
@@ -114,7 +114,6 @@ export default function PlayPage() {
         }
       }
     }
-
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [question, selected, revealed, score, index, total, format, router]);
@@ -151,15 +150,15 @@ export default function PlayPage() {
           </span>
         </div>
 
-        {/* Step dots */}
-        <div style={{ display: "flex", gap: "6px", justifyContent: "center", alignItems: "center" }}>
+        {/* §15: прогресс-точки — принцип прогрессии */}
+        <div style={{ display: "flex", gap: "6px", justifyContent: "center", alignItems: "center" }} role="progressbar" aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={total}>
           {Array.from({ length: total }).map((_, i) => (
             <div key={i} style={{
               height: "6px",
               width: i === index ? "22px" : "6px",
               borderRadius: "100px",
               background: i < index ? BLUE : i === index ? BLUE : BORDER,
-              opacity: i > index ? 0.45 : 1,
+              opacity: i > index ? 0.4 : 1,
               transition: "width 0.4s cubic-bezier(.4,0,.2,1), background 0.3s ease",
               flexShrink: 0,
             }} />
@@ -172,10 +171,11 @@ export default function PlayPage() {
           style={{
             background: WHITE, border: `1px solid ${BORDER}`,
             borderRadius: "24px", padding: "32px",
+            /* §6: тень + border */
             boxShadow: "0 4px 20px rgba(0,0,0,.05)",
             display: "flex", flexDirection: "column", gap: "24px",
             animation: "fade-up 0.35s ease both",
-            minHeight: "260px",
+            minHeight: "280px",
           }}
         >
           {question.format === "quiz" && (
@@ -189,12 +189,15 @@ export default function PlayPage() {
           )}
         </div>
 
-        {/* Keyboard hint */}
-        <div style={{ textAlign: "center" }}>
-          <span style={{ fontSize: "12px", color: "#C4C4C6", fontWeight: 500, letterSpacing: "0.2px" }}>
-            {question.format === "quiz" && "Клавиши 1–4 для выбора ответа"}
+        {/* §15: принцип прогрессии — показываем сколько осталось */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: "12px", color: "#BBBBCC", fontWeight: 500, letterSpacing: "0.2px" }}>
+            {question.format === "quiz" && "Клавиши 1–4 для ответа"}
             {question.format === "truefalse" && "← Правда · Ложь →"}
-            {question.format === "flashcard" && (!revealed ? "Пробел — показать определение" : "← Не знал · Знал →")}
+            {question.format === "flashcard" && (!revealed ? "Пробел — показать" : "← Не знал · Знал →")}
+          </span>
+          <span style={{ fontSize: "12px", color: "#BBBBCC", fontWeight: 500 }}>
+            {remaining > 0 ? `Осталось ${remaining}` : "Последний вопрос"}
           </span>
         </div>
 
@@ -217,7 +220,7 @@ function QuizCard({ question, selected, onAnswer }: {
       <p style={{ fontSize: "clamp(17px, 2.5vw, 20px)", fontWeight: 700, lineHeight: 1.45, color: INK }}>
         {question.question}
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }} role="group" aria-label="Варианты ответа">
         {question.options.map((opt, i) => {
           const revealed = selected !== null;
           const isCorrect = i === question.correct;
@@ -231,10 +234,13 @@ function QuizCard({ question, selected, onAnswer }: {
           return (
             <button
               key={i} onClick={() => onAnswer(i)} disabled={revealed}
+              aria-label={`Вариант ${i + 1}: ${opt}${isCorrect && revealed ? " — правильный ответ" : ""}`}
               style={{
                 display: "flex", alignItems: "center", gap: "12px",
                 borderRadius: "14px", border: `1.5px solid ${borderColor}`,
-                padding: "14px 16px", textAlign: "left", fontSize: "15px",
+                /* §12: min 48px высота для мобильных тап-зон */
+                padding: "14px 16px", minHeight: "48px",
+                textAlign: "left", fontSize: "15px",
                 fontFamily: "'Golos Text', system-ui, sans-serif",
                 background: bg, color: textColor,
                 cursor: revealed ? "default" : "pointer",
@@ -253,7 +259,7 @@ function QuizCard({ question, selected, onAnswer }: {
                 background: isCorrect && revealed ? OK_BORDER : isSelected && revealed ? ERR_BORDER : SURFACE,
                 color: isCorrect && revealed ? OK_TEXT : isSelected && revealed ? ERR_TEXT : MID,
                 transition: "background .15s",
-              }}>
+              }} aria-hidden="true">
                 {i + 1}
               </span>
               {opt}
@@ -279,21 +285,23 @@ function TrueFalseCard({ question, selected, onAnswer }: {
       <p style={{ fontSize: "clamp(17px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.45, color: INK }}>
         {question.question}
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }} role="group" aria-label="Выберите: правда или ложь">
         {([true, false] as const).map((v) => {
           const st = getStyle(v);
-          const isActive = selected !== null && (v === question.correct || selected === v);
           return (
             <button
               key={String(v)} onClick={() => onAnswer(v)} disabled={selected !== null}
+              aria-pressed={selected === v}
               style={{
                 borderRadius: "16px", border: `1.5px solid ${st.borderColor}`,
-                padding: "28px 12px", fontFamily: "'Golos Text', system-ui, sans-serif",
+                /* §12: 48px минимум для мобильных тап-зон */
+                padding: "28px 12px", minHeight: "80px",
+                fontFamily: "'Golos Text', system-ui, sans-serif",
                 fontSize: "16px", fontWeight: 700,
                 background: st.background, color: st.color,
                 cursor: selected !== null ? "default" : "pointer",
-                transition: "border-color .15s, background .15s, transform .1s",
-                transform: isActive ? "scale(1.02)" : "none",
+                transition: "border-color .15s, background .15s, transform .12s",
+                transform: selected !== null && (v === question.correct || selected === v) ? "scale(1.02)" : "none",
               }}
               onMouseEnter={(e) => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BLUE; }}
               onMouseLeave={(e) => { if (selected === null)(e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
@@ -326,7 +334,9 @@ function FlashcardCard({ question, revealed, onReveal, onNext }: {
           onClick={onReveal}
           style={{
             borderRadius: "14px", border: `1.5px solid ${BORDER}`,
-            padding: "18px", fontFamily: "'Golos Text', system-ui, sans-serif",
+            /* §12: 48px минимум */
+            padding: "16px", minHeight: "52px",
+            fontFamily: "'Golos Text', system-ui, sans-serif",
             fontSize: "15px", fontWeight: 600, color: MID,
             background: SURFACE, cursor: "pointer",
             transition: "border-color .15s, color .15s, background .15s",
@@ -348,29 +358,32 @@ function FlashcardCard({ question, revealed, onReveal, onNext }: {
             <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" as const, color: BLUE }}>
               Определение
             </span>
-            <p style={{ marginTop: "8px", fontSize: "15px", lineHeight: 1.7, color: INK }}>
+            <p style={{ marginTop: "8px", fontSize: "15px", lineHeight: 1.72, color: INK }}>
               {question.back}
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+          {/* §12: тап-зоны 48px, §5: large buttons */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }} role="group" aria-label="Вы знали ответ?">
             <button
               onClick={() => onNext(false)}
               style={{
-                borderRadius: "14px", border: `1.5px solid ${ERR_BORDER}`, padding: "16px",
+                borderRadius: "14px", border: `1.5px solid ${ERR_BORDER}`,
+                padding: "16px", minHeight: "56px",
                 fontFamily: "'Golos Text', system-ui, sans-serif", fontSize: "15px", fontWeight: 700,
                 color: ERR_TEXT, background: ERR_BG, cursor: "pointer", transition: "opacity .15s, transform .1s",
               }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.8"; el.style.transform = "scale(0.98)"; }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.82"; el.style.transform = "scale(0.98)"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "1"; el.style.transform = "none"; }}
             >✗  Не знал</button>
             <button
               onClick={() => onNext(true)}
               style={{
-                borderRadius: "14px", border: `1.5px solid ${OK_BORDER}`, padding: "16px",
+                borderRadius: "14px", border: `1.5px solid ${OK_BORDER}`,
+                padding: "16px", minHeight: "56px",
                 fontFamily: "'Golos Text', system-ui, sans-serif", fontSize: "15px", fontWeight: 700,
                 color: OK_TEXT, background: OK_BG, cursor: "pointer", transition: "opacity .15s, transform .1s",
               }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.8"; el.style.transform = "scale(0.98)"; }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.82"; el.style.transform = "scale(0.98)"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.opacity = "1"; el.style.transform = "none"; }}
             >✓  Знал</button>
           </div>
