@@ -10,9 +10,11 @@ const DIFFICULTIES = [
   { key: "hard",   label: "Сложный", color: "#DC2626", bg: "#FFF0F0", border: "#FCA5A5" },
 ] as const;
 const FORMATS = [
-  { key: "quiz",      icon: "🧠", label: "Квиз",              desc: "4 варианта, один правильный" },
-  { key: "truefalse", icon: "⚡", label: "Правда или ложь",  desc: "Оцени утверждение" },
-  { key: "flashcard", icon: "📖", label: "Флеш-карточки",    desc: "Термин → определение" },
+  { key: "quiz",      icon: "🧠", label: "Квиз",              desc: "4 варианта + таймер на каждый вопрос" },
+  { key: "truefalse", icon: "⚡", label: "Правда или ложь",  desc: "Быстрые бинарные суждения" },
+  { key: "flashcard", icon: "📖", label: "Флеш-карточки",    desc: "Термин → показать определение" },
+  { key: "fillblank", icon: "✏️", label: "Заполни пропуск",  desc: "Вставь пропущенное слово" },
+  { key: "matching",  icon: "🔗", label: "Сопоставление",    desc: "Соедини термин с определением" },
 ] as const;
 
 export default function TeacherPage() {

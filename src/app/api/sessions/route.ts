@@ -29,10 +29,20 @@ function buildPrompt(topic: string, format: GameFormat, count: number, difficult
   const d = DIFFICULTY_RU[difficulty] ?? DIFFICULTY_RU.medium;
   if (format === "quiz") return `Создай ${count} вопросов квиза на тему "${topic}". ${d}
 Ответь ТОЛЬКО JSON-массивом:
-[{"format":"quiz","question":"Вопрос?","options":["А","Б","В","Г"],"correct":0,"explanation":"Объяснение (1-2 предложения)."}]`;
+[{"format":"quiz","question":"Вопрос?","options":["А","Б","В","Г"],"correct":0,"explanation":"Объяснение (1-2 предложения)."}]
+Правила: correct — индекс правильного ответа (0-3), все варианты правдоподобны.`;
   if (format === "truefalse") return `Создай ${count} утверждений "Правда или ложь" на тему "${topic}". ${d}
 Ответь ТОЛЬКО JSON-массивом:
-[{"format":"truefalse","question":"Утверждение.","correct":true,"explanation":"Объяснение (1-2 предложения)."}]`;
+[{"format":"truefalse","question":"Утверждение.","correct":true,"explanation":"Объяснение (1-2 предложения)."}]
+Правила: примерно половина true, половина false.`;
+  if (format === "fillblank") return `Создай ${count} предложений с одним пропуском на тему "${topic}". ${d}
+Ответь ТОЛЬКО JSON-массивом:
+[{"format":"fillblank","sentence":"Слово ___ использовано в контексте","answer":"слово","hint":"подсказка без ответа","explanation":"Объяснение (1-2 предложения)."}]
+Правила: пропуск обозначь символом ___, ответ — одно-два слова, подсказка не должна содержать ответ.`;
+  if (format === "matching") return `Создай ${count} пар "термин — краткое определение" на тему "${topic}". ${d}
+Ответь ТОЛЬКО JSON-массивом с ОДНИМ объектом:
+[{"format":"matching","pairs":[{"left":"Термин (1-3 слова)","right":"Краткое определение (до 8 слов)"}]}]
+Правила: термины короткие, определения чёткие и краткие, ровно ${count} пар.`;
   return `Создай ${count} флеш-карточек на тему "${topic}". ${d}
 Ответь ТОЛЬКО JSON-массивом:
 [{"format":"flashcard","front":"Термин","back":"Чёткое определение"}]`;

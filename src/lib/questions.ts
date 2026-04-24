@@ -1,4 +1,4 @@
-export type GameFormat = "quiz" | "truefalse" | "flashcard";
+export type GameFormat = "quiz" | "truefalse" | "flashcard" | "fillblank" | "matching";
 
 export interface QuizQuestion {
   format: "quiz";
@@ -21,7 +21,25 @@ export interface FlashcardQuestion {
   back: string;
 }
 
-export type Question = QuizQuestion | TrueFalseQuestion | FlashcardQuestion;
+export interface FillBlankQuestion {
+  format: "fillblank";
+  sentence: string;
+  answer: string;
+  hint?: string;
+  explanation?: string;
+}
+
+export interface MatchingPair {
+  left: string;
+  right: string;
+}
+
+export interface MatchingQuestion {
+  format: "matching";
+  pairs: MatchingPair[];
+}
+
+export type Question = QuizQuestion | TrueFalseQuestion | FlashcardQuestion | FillBlankQuestion | MatchingQuestion;
 
 const quizQuestions: QuizQuestion[] = [
   {
@@ -96,6 +114,8 @@ const banks: Record<GameFormat, Question[]> = {
   quiz: quizQuestions,
   truefalse: trueFalseQuestions,
   flashcard: flashcardQuestions,
+  fillblank: [],
+  matching: [],
 };
 
 export function getQuestion(format: GameFormat, index: number): Question | null {
@@ -112,16 +132,14 @@ export const FORMAT_LABELS: Record<GameFormat, string> = {
   quiz: "Квиз",
   truefalse: "Правда или ложь",
   flashcard: "Флеш-карточки",
+  fillblank: "Заполни пропуск",
+  matching: "Сопоставление",
 };
 
 export const FORMAT_DESCRIPTIONS: Record<GameFormat, string> = {
   quiz: "Выбери правильный ответ из четырёх вариантов",
   truefalse: "Определи — утверждение верно или нет",
   flashcard: "Посмотри на термин, вспомни определение и открой карточку",
-};
-
-export const FORMAT_ICONS: Record<GameFormat, string> = {
-  quiz: "◈",
-  truefalse: "⊕",
-  flashcard: "◫",
+  fillblank: "Вставь пропущенное слово в предложение",
+  matching: "Соедини термин с правильным определением",
 };

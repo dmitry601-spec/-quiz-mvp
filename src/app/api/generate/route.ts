@@ -32,17 +32,27 @@ function buildPrompt(topic: string, format: GameFormat, count: number, difficult
   if (format === "quiz") {
     return `Создай ${count} вопросов квиза на тему "${topic}". ${diffHint}
 Ответь ТОЛЬКО JSON-массивом:
-[{"format":"quiz","question":"Вопрос?","options":["А","Б","В","Г"],"correct":0,"explanation":"Краткое объяснение почему этот вариант правильный (1-2 предложения)."}]
+[{"format":"quiz","question":"Вопрос?","options":["А","Б","В","Г"],"correct":0,"explanation":"Краткое объяснение (1-2 предложения)."}]
 Правила: correct — индекс правильного ответа (0-3), все варианты правдоподобны, язык — русский.`;
   }
-
   if (format === "truefalse") {
     return `Создай ${count} утверждений "Правда или ложь" на тему "${topic}". ${diffHint}
 Ответь ТОЛЬКО JSON-массивом:
-[{"format":"truefalse","question":"Утверждение.","correct":true,"explanation":"Краткое объяснение почему это правда или ложь (1-2 предложения)."}]
+[{"format":"truefalse","question":"Утверждение.","correct":true,"explanation":"Краткое объяснение (1-2 предложения)."}]
 Правила: примерно половина true, половина false, язык — русский.`;
   }
-
+  if (format === "fillblank") {
+    return `Создай ${count} предложений с одним пропуском на тему "${topic}". ${diffHint}
+Ответь ТОЛЬКО JSON-массивом:
+[{"format":"fillblank","sentence":"Слово ___ использовано в контексте","answer":"слово","hint":"подсказка без ответа","explanation":"Объяснение (1-2 предложения)."}]
+Правила: пропуск — символ ___, ответ — одно-два слова, подсказка не содержит ответ, язык — русский.`;
+  }
+  if (format === "matching") {
+    return `Создай ${count} пар "термин — краткое определение" на тему "${topic}". ${diffHint}
+Ответь ТОЛЬКО JSON-массивом с ОДНИМ объектом:
+[{"format":"matching","pairs":[{"left":"Термин","right":"Краткое определение до 8 слов"}]}]
+Правила: термины 1-3 слова, определения чёткие и краткие, ровно ${count} пар, язык — русский.`;
+  }
   return `Создай ${count} флеш-карточек на тему "${topic}". ${diffHint}
 Ответь ТОЛЬКО JSON-массивом:
 [{"format":"flashcard","front":"Термин","back":"Чёткое определение"}]

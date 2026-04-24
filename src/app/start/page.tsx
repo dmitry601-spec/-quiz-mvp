@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { GameFormat, FORMAT_LABELS, FORMAT_DESCRIPTIONS } from "@/lib/questions";
 
-const FORMAT_ICONS: Record<GameFormat, string> = { quiz: "🧠", truefalse: "⚡", flashcard: "📖" };
-const FORMAT_TIME: Record<GameFormat, string>  = { quiz: "~2 мин", truefalse: "~1 мин", flashcard: "~3 мин" };
-const FORMAT_BADGE: Record<GameFormat, string | null> = { quiz: "Популярное", truefalse: null, flashcard: null };
+const FORMAT_ICONS: Record<GameFormat, string> = { quiz: "🧠", truefalse: "⚡", flashcard: "📖", fillblank: "✏️", matching: "🔗" };
+const FORMAT_TIME: Record<GameFormat, string>  = { quiz: "~2 мин", truefalse: "~1 мин", flashcard: "~3 мин", fillblank: "~2 мин", matching: "~3 мин" };
+const FORMAT_BADGE: Record<GameFormat, string | null> = { quiz: "Популярное", truefalse: null, flashcard: null, fillblank: null, matching: null };
 
-const formats: GameFormat[] = ["quiz", "truefalse", "flashcard"];
+const formats: GameFormat[] = ["quiz", "truefalse", "flashcard", "fillblank", "matching"];
 const COUNTS = [5, 10, 15] as const;
 const DIFFICULTIES = [
   { key: "easy",   label: "Лёгкий",  color: "#19AA0F", bg: "#F0FDF4", border: "#86EFAC" },
