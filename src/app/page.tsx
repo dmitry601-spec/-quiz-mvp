@@ -69,8 +69,8 @@ export default function LandingPage() {
         <div className={s.navR}>
           <a href="#how" className={s.navA}>Как работает</a>
           <a href="#pricing" className={s.navA}>Цена</a>
-          <Link href="/teacher" className={s.navA}>Учителям</Link>
-          <Link href="/start" className={`${s.btn} ${s.btnBlue}`}>Начать бесплатно</Link>
+          <Link href="/start" className={s.navA}>Демо</Link>
+          <Link href="/teacher" className={`${s.btn} ${s.btnBlue}`}>Создать урок →</Link>
         </div>
       </nav>
 
@@ -99,7 +99,7 @@ export default function LandingPage() {
                 Создать урок для класса →
               </Link>
               <Link href="/start" className={`${s.btn} ${s.btnGhost} ${s.btnLg}`}>
-                Попробовать самому
+                Попробовать как ученик
               </Link>
             </div>
 
@@ -295,8 +295,8 @@ export default function LandingPage() {
             <div className={s.midCtaT}>Первые 7 дней — бесплатно</div>
             <div className={s.midCtaS}>Без кредитной карты. Отмена в любой момент. Уже через 5 минут у вас будет первая игра.</div>
           </div>
-          <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
-            Начать прямо сейчас →
+          <Link href="/teacher" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`}>
+            Создать урок прямо сейчас →
           </Link>
         </div>
       </div>
@@ -450,8 +450,8 @@ export default function LandingPage() {
               <span>Используют 200+ репетиторов по всей России</span>
             </div>
 
-            <Link href="/start" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`} style={{ width: "100%", justifyContent: "center" }}>
-              Начать бесплатно →
+            <Link href="/teacher" className={`${s.btn} ${s.btnBlue} ${s.btnLg}`} style={{ width: "100%", justifyContent: "center" }}>
+              Создать первый урок →
             </Link>
             <div className={s.priceNote}>Один удержанный ученик = 1 000–3 000 ₽ в месяц. Инструмент окупается с первого занятия.</div>
           </div>
